@@ -1,0 +1,101 @@
+{
+  "realm": "crm-realm",
+  "displayName": "CRM Platform",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "accessTokenLifespan": 3600,
+  "clients": [
+    {
+      "clientId": "crm-frontend",
+      "name": "CRM Frontend (Angular)",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:4200/*",
+        "https://*.railway.app/*",
+        "https://*.render.com/*",
+        "https://*.netlify.app/*"
+      ],
+      "webOrigins": ["*"],
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    },
+    {
+      "clientId": "crm-backend",
+      "name": "CRM Backend (Spring Boot)",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "crm-backend-secret-change-in-prod",
+      "standardFlowEnabled": false,
+      "serviceAccountsEnabled": true,
+      "protocol": "openid-connect"
+    },
+    {
+      "clientId": "crm-swagger",
+      "name": "Swagger UI",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "redirectUris": [
+        "http://localhost:8080/api/swagger-ui/oauth2-redirect.html"
+      ],
+      "webOrigins": ["http://localhost:8080"],
+      "protocol": "openid-connect"
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "EMPRESA",
+        "description": "Usuário da empresa — acesso completo ao CRM (clientes, leads, tarefas, relatórios)"
+      },
+      {
+        "name": "CLIENTE",
+        "description": "Usuário cliente — acesso somente leitura ao dashboard e relatórios"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin.empresa",
+      "email": "admin@empresa.com",
+      "firstName": "Admin",
+      "lastName": "Empresa",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "empresa123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["EMPRESA"]
+    },
+    {
+      "username": "usuario.cliente",
+      "email": "usuario@cliente.com",
+      "firstName": "Usuário",
+      "lastName": "Cliente",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "cliente123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["CLIENTE"]
+    }
+  ]
+}

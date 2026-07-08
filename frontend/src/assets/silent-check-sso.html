@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Silent SSO</title>
+</head>
+<body>
+  <!--
+    Este arquivo é usado pelo Keycloak para verificar silenciosamente
+    se o usuário já está logado, sem mostrar nenhuma tela.
+    É o mecanismo de "lembrar login" do Keycloak.
+  -->
+  <script>
+    parent.postMessage(location.href, location.origin);
+  </script>
+</body>
+</html>
