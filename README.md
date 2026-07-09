@@ -1,421 +1,421 @@
-# 🚀 CRM Platform
+# CRM Platform
 
-> **Sistema de CRM completo** com Java 21 + Spring Boot + Angular 17 + Keycloak + IA  
-> Ideal para portfólio — siga o guia abaixo para colocar no ar em menos de 1 hora!
+<div align="center">
 
----
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.5-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![Angular](https://img.shields.io/badge/Angular-17-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-## 📋 Índice
+**Sistema de CRM completo com dashboard inteligente, funil de vendas e insights via IA.**
 
-1. [O que é este projeto?](#-o-que-é-este-projeto)
-2. [Pré-requisitos](#-pré-requisitos)
-3. [Passo 1 — Criar o repositório no GitHub](#-passo-1--criar-o-repositório-no-github)
-4. [Passo 2 — Clonar no IntelliJ](#-passo-2--clonar-no-intellij)
-5. [Passo 3 — Rodar com Docker (modo mais fácil)](#-passo-3--rodar-com-docker-modo-mais-fácil)
-6. [Passo 4 — Rodar backend e frontend separadamente](#-passo-4--rodar-backend-e-frontend-separadamente)
-7. [Usuários de teste](#-usuários-de-teste)
-8. [Acessando o sistema](#-acessando-o-sistema)
-9. [Funcionalidades](#-funcionalidades)
-10. [Habilitar IA real (OpenAI)](#-habilitar-ia-real-openai)
-11. [Deploy para o LinkedIn (Railway)](#-deploy-para-o-linkedin-railway)
-12. [Estrutura do projeto](#-estrutura-do-projeto)
-13. [Tecnologias usadas](#-tecnologias-usadas)
+[Funcionalidades](#-funcionalidades) • [Arquitetura](#-arquitetura) • [Como rodar](#-como-rodar) • [API Docs](#-api-docs) • [Deploy](#-deploy)
+
+</div>
 
 ---
 
-## 💡 O que é este projeto?
+## 📋 Sobre o Projeto
 
-Um CRM (Customer Relationship Management) completo, com:
-- **Login seguro** com dois tipos de usuário (empresa e cliente)
-- **Cadastro de clientes** com CRUD completo
-- **Funil de leads** (do contato inicial ao fechamento)
-- **Gestão de tarefas** com alertas de atraso
-- **Dashboard com gráficos** e **insights de IA** automáticos
-- Tudo containerizado com Docker — roda com **um único comando**
+O **CRM Platform** é um sistema de gestão de relacionamento com clientes desenvolvido com stack moderna e padrões de nível sênior. Permite gerenciar clientes, leads em funil de vendas e tarefas, com um dashboard inteligente que usa IA para gerar insights automáticos sobre o negócio.
+
+### Contexto e Motivação
+
+Projeto desenvolvido para demonstrar domínio de arquitetura em camadas, integração entre frontend e backend desacoplados, versionamento de banco de dados, containerização e integração com APIs de IA — tecnologias exigidas em posições sênior no mercado atual.
 
 ---
 
-## 🛠 Pré-requisitos
+## ✨ Funcionalidades
 
-Instale estas ferramentas antes de começar. Clique em cada link para baixar:
+### Dashboard Inteligente
+- Métricas em tempo real: clientes ativos, leads no funil, tarefas abertas e em atraso
+- Gráfico de rosca com distribuição do funil de vendas por status
+- **Cards de IA** gerados automaticamente com análise do negócio:
+  - Taxa de conversão do funil
+  - Crescimento de clientes mês a mês
+  - Alertas de tarefas em atraso
+  - Insights sobre leads em negociação
 
-| Ferramenta | Para quê serve | Link |
-|---|---|---|
-| **Git** | Versionamento de código | https://git-scm.com/downloads |
-| **Docker Desktop** | Rodar banco, Keycloak e app em containers | https://www.docker.com/products/docker-desktop |
-| **IntelliJ IDEA** | IDE para editar o projeto | https://www.jetbrains.com/idea/download (Community é gratuito) |
-| **Node.js 20+** | Rodar o frontend Angular | https://nodejs.org (versão LTS) |
-| **Java 21** | Compilar o backend | https://adoptium.net |
+### Gestão de Clientes
+- CRUD completo com busca em tempo real (nome, email, empresa)
+- Soft delete — dados históricos preservados
+- Página de detalhe com todas as tarefas do cliente
 
-**Como verificar se está instalado:**
-```bash
-# Abra o terminal (CMD no Windows / Terminal no Mac/Linux) e rode:
-git --version        # deve mostrar: git version 2.x.x
-docker --version     # deve mostrar: Docker version 26.x.x
-node --version       # deve mostrar: v20.x.x
-java --version       # deve mostrar: openjdk 21.x.x
+### Funil de Leads
+- Sete estágios: Novo → Contato → Qualificado → Proposta → Negociação → Ganho/Perdido
+- Atualização de status com um clique
+- Filtro por estágio do funil
+- Valor estimado por negócio
+
+### Gestão de Tarefas
+- Tarefas associadas a clientes específicos
+- Alertas visuais automáticos para tarefas em atraso
+- Marcar como concluída com um clique
+- Filtro por status e cliente
+
+---
+
+## 🏗 Arquitetura
+
+```
+crm-platform/
+├── backend/                          # Spring Boot 3.2.5 (Java 21)
+│   └── src/main/java/com/crm/platform/
+│       ├── config/                   # SecurityConfig, JpaAuditing, OpenAI
+│       ├── controller/               # REST Controllers (Client, Lead, Task, Dashboard)
+│       ├── domain/
+│       │   ├── entity/               # JPA Entities com herança de BaseEntity
+│       │   └── enums/                # LeadStatus, TaskStatus
+│       ├── dto/
+│       │   ├── request/              # Java Records para input (imutáveis, sem boilerplate)
+│       │   └── response/             # Java Records para output
+│       ├── exception/                # GlobalExceptionHandler (RFC 7807 ProblemDetail)
+│       ├── mapper/                   # MapStruct (gerado em compile-time, zero reflexão)
+│       ├── repository/               # Spring Data JPA com queries customizadas
+│       └── service/                  # Lógica de negócio, regras, transações
+│   └── src/main/resources/
+│       ├── application.yml           # Configurações por ambiente
+│       └── db/migration/             # Flyway V1-V4 (versionamento de banco)
+│
+├── frontend/                         # Angular 17 (Standalone Components)
+│   └── src/app/
+│       ├── core/
+│       │   ├── guards/               # AuthGuard, RoleGuard
+│       │   ├── interceptors/         # HTTP interceptor (auth token)
+│       │   └── services/             # ClientService, LeadService, TaskService, DashboardService
+│       ├── features/
+│       │   ├── auth/                 # Login component
+│       │   ├── dashboard/            # Dashboard com Chart.js
+│       │   ├── clients/              # List + Detail + Form Dialog
+│       │   ├── leads/                # List + Form Dialog + Status update
+│       │   └── tasks/                # List + Form Dialog + Complete action
+│       └── shared/
+│           └── models/               # TypeScript interfaces (espelham os DTOs do backend)
+│
+├── keycloak/
+│   └── realm-export.json             # Realm pré-configurado (roles EMPRESA/CLIENTE)
+│
+└── docker-compose.yml                # Orquestração local (postgres + keycloak + backend + frontend)
 ```
 
+### Decisões de Arquitetura
+
+| Decisão | Escolha | Justificativa |
+|---|---|---|
+| Mapeamento Entity↔DTO | MapStruct | Gerado em compile-time, mais rápido que ModelMapper, erros em build time |
+| Versionamento de banco | Flyway | Histórico auditável, migrations idempotentes, padrão de mercado |
+| Tratamento de erros | RFC 7807 ProblemDetail | Padrão moderno do Spring 6, resposta consistente para o frontend |
+| HTTP Client (Spring 6) | RestClient | Substituto moderno do RestTemplate, fluent API |
+| Entidades base | BaseEntity com JPA Auditing | createdAt/updatedAt/createdBy automáticos em todas as entidades |
+| Frontend state | SessionStorage | Simples e suficiente para demo; substituível por NgRx em escala |
+| Lazy Loading Angular | Route-level code splitting | Carregamento inicial mais rápido, cada página carrega sob demanda |
+
 ---
 
-## 📁 Passo 1 — Criar o repositório no GitHub
+## 🛠 Stack Tecnológica
 
-> **O GitHub é como um "Google Drive para código"** — salva seu projeto na nuvem e permite que recrutadores vejam seu trabalho.
+### Backend
+| Tecnologia | Versão | Papel |
+|---|---|---|
+| Java | 21 | Linguagem (Records, Pattern Matching, Virtual Threads ready) |
+| Spring Boot | 3.2.5 | Framework principal |
+| Spring Security | 6.2 | Autenticação e autorização |
+| Spring Data JPA | 3.2 | Abstração de persistência |
+| Hibernate | 6.4 | ORM |
+| Flyway | 10.x | Migrations de banco de dados |
+| MapStruct | 1.5.5 | Mapeamento Entity ↔ DTO |
+| Lombok | 1.18.32 | Redução de boilerplate |
+| SpringDoc/Swagger | 2.5.0 | Documentação automática da API |
+| JUnit 5 + Mockito | latest | Testes unitários e de integração |
 
-### 1.1 Criar conta no GitHub (se não tiver)
-1. Acesse https://github.com
-2. Clique em **"Sign up"** e crie sua conta gratuita
+### Frontend
+| Tecnologia | Versão | Papel |
+|---|---|---|
+| Angular | 17 | Framework SPA com Standalone Components |
+| Angular Material | 17 | Design system (componentes UI) |
+| TypeScript | 5.4 | Tipagem estática |
+| Chart.js + ng2-charts | 4.x / 5.x | Gráficos do dashboard |
+| RxJS | 7.8 | Programação reativa |
 
-### 1.2 Criar o repositório
-1. Depois de logar, clique no **"+"** no canto superior direito
-2. Clique em **"New repository"**
-3. Preencha:
-   - **Repository name:** `crm-platform`
-   - **Description:** `CRM Platform com Java 21, Spring Boot, Angular 17, Keycloak e IA`
-   - Marque **"Public"** (para aparecer no LinkedIn)
-   - **NÃO** marque "Initialize this repository with a README" (já temos um)
-4. Clique em **"Create repository"**
+### Infraestrutura
+| Tecnologia | Versão | Papel |
+|---|---|---|
+| PostgreSQL | 16 | Banco de dados principal |
+| Docker + Compose | latest | Containerização |
+| Nginx | alpine | Servidor web para o frontend em produção |
+| Keycloak | 23 | Identity Provider (OAuth2 / OpenID Connect) |
 
-### 1.3 Subir o projeto para o GitHub
-Abra o terminal na pasta onde você descompactou o projeto e rode:
+---
+
+## 🚀 Como Rodar
+
+### Pré-requisitos
 
 ```bash
-# Entre na pasta do projeto (ajuste o caminho)
+# Verifique se estão instalados:
+java --version      # Java 21+
+docker --version    # Docker 24+
+node --version      # Node.js 20+
+```
+
+### Opção A — Tudo pelo Docker (mais simples)
+
+```bash
+# Clone o repositório
+git clone https://github.com/SEU_USUARIO/crm-platform.git
 cd crm-platform
 
-# Inicializa o Git (cria a "memória" do projeto)
-git init
-
-# Adiciona todos os arquivos
-git add .
-
-# Faz o primeiro commit (como salvar o documento)
-git commit -m "feat: initial CRM Platform setup"
-
-# Conecta com o seu repositório no GitHub
-# ATENÇÃO: troque SEU_USUARIO pelo seu usuário do GitHub!
-git remote add origin https://github.com/SEU_USUARIO/crm-platform.git
-
-# Sobe o código para o GitHub
-git branch -M main
-git push -u origin main
-```
-
-✅ **Pronto!** Acesse `https://github.com/SEU_USUARIO/crm-platform` e veja o código lá.
-
----
-
-## 💻 Passo 2 — Clonar no IntelliJ
-
-> **Clonar** é "baixar o projeto do GitHub para o seu computador de forma inteligente" — o IntelliJ entende a estrutura do Maven automaticamente.
-
-1. Abra o **IntelliJ IDEA**
-2. Na tela inicial, clique em **"Get from VCS"**  
-   *(ou pelo menu: File → New → Project from Version Control)*
-3. Cole a URL do seu repositório:  
-   `https://github.com/SEU_USUARIO/crm-platform.git`
-4. Escolha onde salvar (ex: `C:\projetos\crm-platform` ou `~/projetos/crm-platform`)
-5. Clique em **"Clone"**
-6. O IntelliJ vai perguntar se quer abrir como projeto Maven — clique **"Yes"**
-7. **Aguarde** enquanto ele baixa as dependências (pode demorar 2-5 minutos na primeira vez)
-
----
-
-## 🐳 Passo 3 — Rodar com Docker (modo mais fácil)
-
-> **Docker** é como uma "caixa mágica" que instala e roda tudo automaticamente, sem você precisar configurar banco de dados, Keycloak, etc.
-
-### 3.1 Certifique-se que o Docker Desktop está aberto
-- Abra o Docker Desktop e aguarde aparecer "Engine running" (ícone verde)
-
-### 3.2 Configure as variáveis de ambiente
-```bash
-# Na pasta raiz do projeto (crm-platform/), rode:
-cp .env.example .env
-# O arquivo .env já tem valores padrão, não precisa alterar nada para começar
-```
-
-### 3.3 Suba tudo com um único comando
-```bash
-# Na pasta raiz do projeto:
+# Suba tudo
 docker compose up --build
-
-# Isso vai:
-# 1. Baixar as imagens do PostgreSQL e Keycloak (1ª vez demora ~5 min)
-# 2. Compilar o backend Java
-# 3. Compilar o frontend Angular
-# 4. Subir tudo conectado
 ```
 
-### 3.4 Aguarde os serviços iniciarem
-Você saberá que está pronto quando ver no terminal:
-```
-crm_backend  | Started CrmPlatformApplication in 8.xxx seconds
-crm_frontend | nginx: ready to accept connections
-```
+Acesse http://localhost:4200 após ~5 minutos.
 
-### 3.5 Parar os containers
+### Opção B — Desenvolvimento local (recomendado para editar código)
+
+**Terminal 1 — Banco de dados:**
 ```bash
-# Para parar (preserva os dados do banco):
-Ctrl + C
-docker compose down
-
-# Para parar E apagar todos os dados:
-docker compose down -v
+docker compose up postgres -d
 ```
 
----
-
-## ⚙️ Passo 4 — Rodar backend e frontend separadamente
-
-> Útil quando você está **desenvolvendo** e quer recarregamento automático ao salvar arquivos.
-
-### 4.1 Sobe só o banco e o Keycloak
-```bash
-docker compose up postgres keycloak -d
-# O -d roda em background (não trava o terminal)
-```
-
-### 4.2 Roda o backend (IntelliJ ou terminal)
-
-**Pelo IntelliJ:**
-1. Abra `backend/src/main/java/com/crm/platform/CrmPlatformApplication.java`
-2. Clique na seta verde ▶️ ao lado da classe
-3. Aguarde aparecer: `Started CrmPlatformApplication`
-
-**Pelo terminal:**
+**Terminal 2 — Backend:**
 ```bash
 cd backend
 ./mvnw spring-boot:run
 # Windows: mvnw.cmd spring-boot:run
 ```
 
-### 4.3 Roda o frontend
+**Terminal 3 — Frontend:**
 ```bash
 cd frontend
-npm install          # Instala as dependências (só na 1ª vez)
-npm start            # Inicia o servidor de desenvolvimento
+npm install       # somente na primeira vez
+npm start
+```
+
+Acesse http://localhost:4200
+
+### Credenciais de Acesso
+
+| Usuário | Senha | Perfil |
+|---|---|---|
+| `admin.empresa` | `empresa123` | Acesso completo ao sistema |
+| `usuario.cliente` | `cliente123` | Acesso somente leitura |
+
+---
+
+## 📡 API Docs
+
+Com o backend rodando, acesse a documentação interativa:
+
+**Swagger UI:** http://localhost:8080/api/swagger-ui.html
+
+### Endpoints principais
+
+```
+GET    /api/dashboard              → Métricas + insights de IA
+GET    /api/clients?search=&page=  → Lista paginada de clientes
+POST   /api/clients                → Criar cliente
+PUT    /api/clients/{id}           → Atualizar cliente
+DELETE /api/clients/{id}           → Desativar cliente (soft delete)
+
+GET    /api/leads?status=&page=    → Lista de leads com filtros
+POST   /api/leads                  → Criar lead
+PATCH  /api/leads/{id}/status      → Mover no funil
+
+GET    /api/tasks?clientId=        → Tarefas por cliente
+POST   /api/tasks                  → Criar tarefa
+PATCH  /api/tasks/{id}/complete    → Marcar como concluída
+```
+
+### Exemplo de resposta — Dashboard
+
+```json
+{
+  "totalClients": 10,
+  "activeClients": 8,
+  "totalLeads": 15,
+  "openTasks": 5,
+  "overdueTasks": 1,
+  "clientGrowthPercent": 15.5,
+  "leadsByStatus": {
+    "NOVO": 3,
+    "NEGOCIACAO": 4,
+    "GANHO": 2,
+    "PERDIDO": 1
+  },
+  "aiInsights": [
+    {
+      "title": "🚀 Crescimento acelerado",
+      "message": "Clientes ativos cresceram 15% este mês. Ótimo momento para expandir o time!",
+      "type": "SUCCESS",
+      "icon": "🚀"
+    }
+  ]
+}
 ```
 
 ---
 
-## 👤 Usuários de teste
+## 🧪 Testes
 
-Estes usuários são criados automaticamente pelo Keycloak:
+```bash
+# Rodar todos os testes
+cd backend
+./mvnw test
 
-| Usuário | Senha | Acesso |
-|---|---|---|
-| `admin.empresa` | `empresa123` | ✅ Tudo (clientes, leads, tarefas, dashboard) |
-| `usuario.cliente` | `cliente123` | 👁️ Somente dashboard e relatórios |
+# Com relatório de cobertura
+./mvnw test jacoco:report
+# Relatório em: target/site/jacoco/index.html
+```
 
----
-
-## 🌐 Acessando o sistema
-
-Após subir tudo, abra no navegador:
-
-| Serviço | URL | Para quê |
-|---|---|---|
-| **Frontend (CRM)** | http://localhost:4200 | Usar o sistema |
-| **Backend (API)** | http://localhost:8080/api | Chamadas REST |
-| **Swagger UI** | http://localhost:8080/api/swagger-ui.html | Testar a API visualmente |
-| **Keycloak Admin** | http://localhost:8180 | Gerenciar usuários/roles |
-
-**Login no Keycloak Admin:**
-- Usuário: `admin`
-- Senha: `admin123`
+Os testes usam banco H2 em memória — não precisam de PostgreSQL rodando.
 
 ---
 
-## ✨ Funcionalidades
+## 🌍 Deploy (Railway)
 
-### Dashboard
-- Métricas em tempo real: clientes ativos, leads, tarefas abertas
-- **Gráfico de rosca** com distribuição do funil de leads
-- **Cards de IA** com insights automáticos (sem OpenAI funciona com heurísticas)
+> Coloque o projeto online em ~10 minutos gratuitamente.
 
-### Clientes
-- Lista paginada com busca em tempo real (nome, email, empresa)
-- Criar, editar, desativar (soft delete — dados históricos preservados)
-- Página de detalhe com todas as tarefas do cliente
-
-### Leads
-- Funil de vendas: Novo → Contato → Qualificado → Proposta → Negociação → Ganho/Perdido
-- Mover lead no funil com 1 clique
-- Filtro por status
-
-### Tarefas
-- Associadas a clientes específicos
-- Alertas visuais para tarefas em atraso
-- Marcar como concluída com 1 clique
+1. Crie conta em https://railway.app com sua conta GitHub
+2. Clique em **New Project → Deploy from GitHub Repo**
+3. Selecione o repositório `crm-platform`
+4. Adicione o serviço de banco: **New Service → Database → PostgreSQL**
+5. Configure as variáveis de ambiente no serviço backend:
+   ```
+   DB_URL=${{Postgres.DATABASE_URL}}
+   OPENAI_API_KEY=sua-chave-aqui
+   OPENAI_ENABLED=true
+   ```
+6. Clique em **Settings → Networking → Generate Domain** para obter a URL pública
 
 ---
 
-## 🤖 Habilitar IA real (OpenAI)
+## 🤖 Integração com OpenAI (Insights Inteligentes)
 
-Por padrão, os insights são gerados por **heurísticas locais** (funciona sem chave).  
+Por padrão, os insights são gerados por **heurísticas locais** e funcionam sem nenhuma configuração.
+
 Para usar o **GPT real**:
 
-1. Crie uma conta em https://platform.openai.com e gere uma chave API
-2. No arquivo `.env`, mude:
-```
-OPENAI_API_KEY=sk-sua-chave-real-aqui
-OPENAI_ENABLED=true
-```
-3. Reinicie os containers:
-```bash
-docker compose down
-docker compose up --build
-```
+1. Crie uma chave em https://platform.openai.com/api-keys
+2. No arquivo `.env`:
+   ```
+   OPENAI_API_KEY=sk-sua-chave-aqui
+   OPENAI_ENABLED=true
+   ```
+3. Reinicie o backend
+
+Os insights passam a ser gerados pelo GPT-3.5 com base nas métricas reais do CRM.
 
 ---
 
-## 🌍 Deploy para o LinkedIn (Railway)
+## 📊 Banco de Dados
 
-> **Railway** hospeda seu projeto de graça (com limite de horas mensais) e te dá uma URL pública. Perfeito para o portfólio!
+### Diagrama de Entidades
 
-### Passo a passo Railway
-
-**1. Crie uma conta no Railway**
-- Acesse https://railway.app
-- Clique em **"Login with GitHub"** — use a mesma conta do GitHub
-
-**2. Crie um novo projeto**
-1. Clique em **"New Project"**
-2. Selecione **"Deploy from GitHub repo"**
-3. Selecione **"crm-platform"**
-4. O Railway vai detectar o `docker-compose.yml` automaticamente
-
-**3. Configure o banco de dados**
-1. No projeto, clique em **"New Service"** → **"Database"** → **"PostgreSQL"**
-2. O Railway cria o banco e gera as variáveis automaticamente
-
-**4. Configure as variáveis de ambiente**
-No painel do Railway, clique em seu serviço backend → **"Variables"**:
 ```
-DB_URL=${{Postgres.DATABASE_URL}}
-KEYCLOAK_URL=https://seu-keycloak.railway.app
+clients
+├── id (UUID, PK)
+├── name, email (unique), phone
+├── company_name, document
+├── notes, active (soft delete)
+└── created_at, updated_at, created_by, updated_by
+
+leads
+├── id (UUID, PK)
+├── name, email, phone, company_name
+├── source, status (enum), estimated_value
+├── responsible, notes
+└── created_at, updated_at, created_by, updated_by
+
+tasks
+├── id (UUID, PK)
+├── title, description, status (enum)
+├── due_date, assigned_to
+├── client_id (FK → clients)
+└── created_at, updated_at, created_by, updated_by
+```
+
+### Migrations Flyway
+
+| Versão | Arquivo | Descrição |
+|---|---|---|
+| V1 | `V1__create_clients.sql` | Tabela de clientes + índices |
+| V2 | `V2__create_leads.sql` | Tabela de leads + constraints |
+| V3 | `V3__create_tasks.sql` | Tabela de tarefas + FK |
+| V4 | `V4__seed_data.sql` | Dados de exemplo para teste |
+
+---
+
+## 🔒 Segurança
+
+- Autenticação via Keycloak (OAuth2 / OpenID Connect) em produção
+- PKCE para fluxo de autorização no frontend
+- CORS configurado explicitamente
+- Soft delete — dados nunca são removidos permanentemente
+- Auditoria automática (quem criou/modificou cada registro)
+- Usuário não-root nos containers Docker
+
+---
+
+## 📁 Variáveis de Ambiente
+
+Copie `.env.example` para `.env` e preencha:
+
+```bash
+# Banco de dados
+DB_URL=jdbc:postgresql://localhost:5432/crmdb
+DB_USER=crmuser
+DB_PASS=crmpassword
+
+# Keycloak
+KEYCLOAK_URL=http://localhost:8180
+
+# OpenAI (opcional)
+OPENAI_API_KEY=sk-...
 OPENAI_ENABLED=false
 ```
 
-**5. Obtenha a URL pública**
-- Após o deploy, clique em **"Settings"** → **"Networking"** → **"Generate Domain"**
-- Você receberá algo como: `https://crm-platform-abc123.railway.app`
-
-**6. Adicione no LinkedIn**
-1. Acesse seu perfil no LinkedIn
-2. Em "Projetos" → **"Adicionar projeto"**
-3. **Nome:** `CRM Platform - Java 21 + Spring Boot + Angular + IA`
-4. **URL:** Cole a URL do Railway
-5. **Descrição sugerida:**
-> Sistema CRM completo desenvolvido com Java 21, Spring Boot 3, Angular 17, autenticação OAuth2/Keycloak e insights inteligentes via OpenAI. Backend com Spring Security, JPA, Flyway e PostgreSQL. Frontend com Angular Material e Chart.js. Containerizado com Docker Compose.
-
 ---
 
-## 📁 Estrutura do projeto
+## 🤝 Contribuindo
 
-```
-crm-platform/
-├── 📄 pom.xml                    ← Maven pai (gerencia os módulos)
-├── 📄 docker-compose.yml         ← Sobe tudo com 1 comando
-├── 📄 .env.example               ← Template de variáveis de ambiente
-│
-├── 🗂️ backend/                   ← Spring Boot
-│   ├── 📄 pom.xml
-│   ├── 🐋 Dockerfile
-│   └── src/main/java/com/crm/platform/
-│       ├── config/               ← Segurança, JPA, OpenAI
-│       ├── controller/           ← REST endpoints
-│       ├── domain/               ← Entidades JPA e Enums
-│       ├── dto/                  ← Request/Response DTOs (Java Records)
-│       ├── exception/            ← Tratamento global de erros
-│       ├── mapper/               ← MapStruct (Entity ↔ DTO)
-│       ├── repository/           ← Spring Data JPA
-│       └── service/              ← Lógica de negócio
-│   └── src/main/resources/
-│       ├── application.yml       ← Configurações do Spring
-│       └── db/migration/         ← Scripts SQL do Flyway (V1-V4)
-│
-├── 🗂️ frontend/                  ← Angular 17
-│   ├── 📄 package.json
-│   ├── 📄 angular.json
-│   ├── 🐋 Dockerfile
-│   ├── 📄 nginx.conf
-│   └── src/app/
-│       ├── core/                 ← Guards, Interceptors, Services
-│       ├── features/             ← Páginas (dashboard, clients, leads, tasks)
-│       └── shared/               ← Models e componentes reutilizáveis
-│
-└── 🗂️ keycloak/
-    └── realm-export.json         ← Configuração do Keycloak (roles e usuários)
+```bash
+# Fork o projeto
+git fork https://github.com/SEU_USUARIO/crm-platform
+
+# Crie uma branch para sua feature
+git checkout -b feat/minha-feature
+
+# Commit seguindo Conventional Commits
+git commit -m "feat(leads): adicionar campo de prioridade"
+
+# Abra um Pull Request
 ```
 
----
+### Padrão de commits
 
-## 🛠 Tecnologias usadas
-
-### Backend
-| Tecnologia | Versão | Para quê |
-|---|---|---|
-| Java | 21 | Linguagem principal (Records, Sealed Classes) |
-| Spring Boot | 3.2.5 | Framework web |
-| Spring Security + OAuth2 | 6.x | Autenticação via JWT/Keycloak |
-| Spring Data JPA + Hibernate | 6.x | Acesso ao banco de dados |
-| Flyway | 10.x | Versionamento do banco (migrations SQL) |
-| MapStruct | 1.5.5 | Mapeamento Entity ↔ DTO (gerado em compile-time) |
-| Lombok | 1.18.32 | Reduz boilerplate (getters, setters, builders) |
-| PostgreSQL | 16 | Banco de dados principal |
-| SpringDoc/Swagger | 2.5.0 | Documentação automática da API |
-| JUnit 5 + Mockito | latest | Testes unitários e de integração |
-
-### Frontend
-| Tecnologia | Versão | Para quê |
-|---|---|---|
-| Angular | 17 | Framework SPA (standalone components) |
-| Angular Material | 17 | Componentes de UI prontos e profissionais |
-| TypeScript | 5.4 | JavaScript com tipagem estática |
-| Chart.js + ng2-charts | 4.x / 6.x | Gráficos do dashboard |
-| Keycloak-js | 23 | Integração com autenticação Keycloak |
-| RxJS | 7.8 | Programação reativa (Observables) |
-
-### Infraestrutura
-| Tecnologia | Versão | Para quê |
-|---|---|---|
-| Keycloak | 23 | Servidor de identidade (OAuth2/OpenID Connect) |
-| Docker + Docker Compose | latest | Containerização e orquestração local |
-| Nginx | alpine | Servidor web para o frontend em produção |
-| Railway | — | Deploy gratuito para portfólio |
-
----
-
-## ❓ Problemas comuns
-
-**"Port 5432 already in use"**
-> O PostgreSQL local está rodando na mesma porta.  
-> Solução: `docker compose down` e depois pare o PostgreSQL local.
-
-**"Cannot connect to Docker daemon"**
-> O Docker Desktop não está aberto.  
-> Solução: Abra o Docker Desktop e aguarde o ícone ficar verde.
-
-**"npm install falhou"**
-> Versão do Node muito antiga.  
-> Solução: Instale o Node.js 20 LTS em https://nodejs.org
-
-**"Keycloak demorando muito para iniciar"**
-> Normal na 1ª vez — o Keycloak demora ~60 segundos.  
-> Aguarde aparecer `Keycloak ... started` no terminal.
-
-**Frontend mostrando 401 Unauthorized**
-> O token JWT expirou ou não foi enviado.  
-> Solução: Faça logout e login novamente.
+| Prefixo | Uso |
+|---|---|
+| `feat:` | Nova funcionalidade |
+| `fix:` | Correção de bug |
+| `refactor:` | Refatoração sem mudança de comportamento |
+| `docs:` | Documentação |
+| `test:` | Testes |
+| `chore:` | Configuração, build, dependências |
 
 ---
 
 ## 📝 Licença
 
-MIT License — use à vontade para seu portfólio!
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
-*Desenvolvido com ❤️ para portfólio sênior — Java + Spring Boot + Angular + Keycloak + IA*
+<div align="center">
+
+Desenvolvido com ☕ Java, 🅰️ Angular e muita determinação.
+
+**[⭐ Se este projeto te ajudou, deixe uma estrela!](https://github.com/SEU_USUARIO/crm-platform)**
+
+</div>
