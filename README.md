@@ -163,7 +163,7 @@ node --version      # Node.js 20+
 
 ```bash
 # Clone o repositório
-git clone https://github.com/SEU_USUARIO/crm-platform.git
+git clone https://github.com/TonyKerr07/crm-platform.git
 cd crm-platform
 
 # Suba tudo
@@ -382,7 +382,7 @@ OPENAI_ENABLED=false
 
 ```bash
 # Fork o projeto
-git fork https://github.com/SEU_USUARIO/crm-platform
+git fork https://github.com/TonyKerr07/crm-platform
 
 # Crie uma branch para sua feature
 git checkout -b feat/minha-feature
@@ -416,6 +416,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 Desenvolvido com ☕ Java, 🅰️ Angular e muita determinação.
 
-**[⭐ Se este projeto te ajudou, deixe uma estrela!](https://github.com/SEU_USUARIO/crm-platform)**
+**[⭐ Se este projeto te ajudou, deixe uma estrela!](https://github.com/TonyKerr07/crm-platform)**
 
 </div>
