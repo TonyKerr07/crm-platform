@@ -1,0 +1,138 @@
+/* ============================================================
+   CRM Platform - Estilos Globais
+   ============================================================ */
+
+/* Import Angular Material pre-built theme */
+@use '@angular/material' as mat;
+@include mat.core();
+
+/* Define a paleta de cores do tema */
+$crm-primary: mat.define-palette(mat.$indigo-palette, 500);
+$crm-accent:  mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$crm-warn:    mat.define-palette(mat.$red-palette);
+
+$crm-theme: mat.define-light-theme((
+  color: (
+    primary: $crm-primary,
+    accent: $crm-accent,
+    warn: $crm-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: 'Inter, sans-serif',
+  ),
+  density: 0,
+));
+
+@include mat.all-component-themes($crm-theme);
+
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar personalizada (Chrome/Edge) ────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ── Material overrides ───────────────────────────────── */
+.mat-mdc-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background: #6366f1 !important;
+}
+
+.mat-mdc-form-field {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ── Tabelas Material ─────────────────────────────────── */
+.mat-mdc-table {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #64748b !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mat-mdc-cell {
+  font-size: 14px !important;
+  color: #374151 !important;
+  padding: 12px 16px !important;
+}
+
+/* ── Sidebar nav items ────────────────────────────────── */
+.mat-mdc-list-item .mdc-list-item__content {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* ── Snackbar ─────────────────────────────────────────── */
+.mat-mdc-snack-bar-container {
+  border-radius: 8px !important;
+}
+
+/* ── Dialogs ──────────────────────────────────────────── */
+.mat-mdc-dialog-container {
+  border-radius: 16px !important;
+}
+
+.mat-mdc-dialog-title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  padding: 20px 24px 12px !important;
+}
+
+.mat-mdc-dialog-content {
+  padding: 0 24px !important;
+  max-height: 65vh !important;
+}
+
+.mat-mdc-dialog-actions {
+  padding: 16px 24px !important;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* ── Chip padrão ──────────────────────────────────────── */
+.chip-active {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.chip-inactive {
+  background-color: #fee2e2 !important;
+  color: #991b1b !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* ── Utilitários ──────────────────────────────────────── */
+.text-muted   { color: #94a3b8; }
+.text-small   { font-size: 12px; }
+.fw-600       { font-weight: 600; }
+.mt-16        { margin-top: 16px; }
+.mb-16        { margin-bottom: 16px; }
+.flex-center  { display: flex; align-items: center; justify-content: center; }
+.full-width   { width: 100%; }
